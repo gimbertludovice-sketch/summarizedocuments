@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physical Fitness Assignment — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0D12;
+    --bg-card: #12161D;
+    --bg-card-2: #171C24;
+    --line: #232933;
+    --accent: #FF5A1F;
+    --accent-dim: #7a2c10;
+    --accent-2: #C6FF3D;
+    --text: #EDEFF2;
+    --muted: #8A93A1;
+    --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+    --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    padding: 40px 0 0;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 700px 400px at 80% -10%, rgba(255,90,31,0.16), transparent 60%),
+      var(--bg);
+  }
+  .id-badge {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-family: var(--mono);
+  }
+  .id-badge .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .id-badge .name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .id-badge .sub { font-size: 11px; color: var(--muted); }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 0 10px;
+  }
+  @media (max-width: 720px) {
+    .hero-grid { grid-template-columns: 1fr; }
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(48px, 9vw, 84px);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    margin: 14px 0 6px;
+    color: var(--text);
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero .meta-line {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  .hero .meta-line strong { color: var(--text); font-weight: 500; }
+
+  /* ---------- 3D DUMBBELL ---------- */
+  .stage {
+    position: relative;
+    perspective: 1000px;
+    width: 100%;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stage-glow {
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,90,31,0.28), transparent 68%);
+    animation: pulse-glow 3.2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { transform: scale(0.92); opacity: 0.7; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+  .dumbbell {
+    position: relative;
+    width: 220px;
+    height: 160px;
+    transform-style: preserve-3d;
+    animation: spin 9s linear infinite, bob 3.2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dumbbell, .stage-glow { animation: none; }
+  }
+  @keyframes spin {
+    from { transform: rotateY(0deg) rotateX(6deg) translateY(0); }
+    to   { transform: rotateY(360deg) rotateX(6deg) translateY(0); }
+  }
+  @keyframes bob {
+    0%, 100% { margin-top: 0px; }
+    50% { margin-top: -8px; }
+  }
+  .db-bar {
+    position: absolute; top: 50%; left: 50%;
+    width: 150px; height: 20px;
+    margin-left: -75px; margin-top: -10px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #6b7683, #2a2f37 45%, #14171b);
+    box-shadow: inset 0 2px 3px rgba(255,255,255,0.28), inset 0 -3px 4px rgba(0,0,0,0.5);
+  }
+  .db-grip {
+    position: absolute; top: 50%; left: 50%;
+    width: 46px; height: 26px;
+    margin-left: -23px; margin-top: -13px;
+    border-radius: 6px;
+    background: repeating-linear-gradient(90deg, #3a4048 0 3px, #23282e 3px 6px);
+    transform: translateZ(11px);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+  }
+  .db-plate {
+    position: absolute; top: 50%;
+    width: 92px; height: 92px;
+    margin-top: -46px;
+    border-radius: 50%;
+  }
+  .db-plate.back { background: radial-gradient(circle at 40% 32%, #202631, #0c0e12 72%); }
+  .db-plate.front { background: radial-gradient(circle at 38% 30%, #FF8A5C, #B23E12 62%, #6b230a 100%);
+    box-shadow: inset 0 0 0 6px rgba(0,0,0,0.35), inset 3px 3px 10px rgba(255,255,255,0.22);
+  }
+  .db-plate.left  { left: -20px; }
+  .db-plate.right { right: -20px; }
+  .db-plate.back.left  { transform: translateZ(-14px); }
+  .db-plate.front.left { transform: translateZ(14px); }
+  .db-plate.back.right  { transform: translateZ(-14px); }
+  .db-plate.front.right { transform: translateZ(14px); }
+  .stage-shadow {
+    position: absolute;
+    width: 180px; height: 22px;
+    left: 50%; bottom: 18px;
+    margin-left: -90px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%);
+    filter: blur(2px);
+  }
+
+  /* ---------- LANE DIVIDER ---------- */
+  .lane {
+    position: relative;
+    height: 34px;
+    margin: 6px 0 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      rgba(255,90,31,0.9) 0 14px,
+      rgba(255,90,31,0) 14px 28px
+    );
+    opacity: 0.9;
+  }
+  .lane-tag {
+    position: absolute; top: 50%; left: 28px;
+    transform: translateY(-50%);
+    background: var(--bg);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section.block { padding: 56px 0 8px; }
+  .section-head { display:flex; align-items:baseline; gap:12px; margin-bottom: 22px; flex-wrap: wrap; }
+  .section-head h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 34px;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+  .section-head .count-pill {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--bg);
+    background: var(--accent-2);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  p.lede { color: var(--muted); margin: -8px 0 20px; max-width: 60ch; }
+
+  /* ---------- SCOREBOARD LOG (Part 1) ---------- */
+  .log { display: flex; flex-direction: column; gap: 10px; }
+  .log-row {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .log-row .idx {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .log-row .desc { font-size: 14.5px; color: var(--text); }
+  .log-row .desc .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: block;
+    margin-top: 3px;
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill.confirmed { color: #12210a; background: var(--accent-2); }
+  .pill.progress { color: #2b1a08; background: #F0B429; }
+
+  .note-box {
+    margin-top: 18px;
+    background: var(--bg-card-2);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .note-box strong { color: var(--text); }
+
+  /* ---------- STAT CARDS (Part 2) ---------- */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 22px;
+    transform-style: preserve-3d;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  .card:hover {
+    border-color: var(--accent-dim);
+    box-shadow: 0 18px 30px -18px rgba(255,90,31,0.35);
+    transform: perspective(700px) rotateX(3deg) rotateY(-3deg) translateY(-2px);
+  }
+  .card-head { display:flex; align-items:center; gap:10px; margin-bottom: 12px; }
+  .icon {
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .card h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-size: 19px;
+    margin: 0;
+  }
+  .card ul { margin: 0; padding-left: 18px; font-size: 13.8px; color: var(--text); }
+  .card ul li { margin-bottom: 7px; }
+  .card ul li::marker { color: var(--accent); }
+
+  .meter-list { display:flex; flex-direction:column; gap:10px; }
+  .meter-row { display:flex; align-items:center; gap:10px; }
+  .meter-label { font-size: 13px; flex: 0 0 168px; color: var(--text); }
+  .meter-track { flex:1; height: 8px; background: var(--line); border-radius: 999px; overflow:hidden; }
+  .meter-fill { height:100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 999px; }
+  .meter-count { font-family: var(--mono); font-size: 12px; color: var(--muted); width: 60px; text-align:right; }
+
+  .feature-card {
+    background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-card-2) 100%);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+  }
+  .feature-card h3 { font-family: var(--display); font-weight:400; font-size: 22px; margin: 0 0 14px; }
+  .feature-card ul { columns: 2; column-gap: 28px; padding-left: 18px; font-size: 14px; }
+  @media (max-width: 640px) { .feature-card ul { columns: 1; } }
+  .feature-card ul li { margin-bottom: 8px; break-inside: avoid; }
+  .feature-card ul li::marker { color: var(--accent); }
+  .depth-note {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 13.8px;
+    color: var(--muted);
+  }
+  .depth-note strong { color: var(--text); }
+
+  .quick-read {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent-2);
+    border-radius: 6px;
+    padding: 18px 22px;
+    font-size: 14.5px;
+    color: var(--text);
+    margin: 8px 0 16px;
+  }
+  .quick-read .eyebrow {
+    display:block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent-2);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* ---------- PART 3: RESPONDENT FLIP CARDS ---------- */
+  .flip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 900px) { .flip-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .flip-grid { grid-template-columns: 1fr; } }
+
+  .flip-card {
+    height: 300px;
+    perspective: 1200px;
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.65s cubic-bezier(.4,.2,.2,1);
+    transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .flip-front {
+    background: var(--bg-card);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+  }
+  .avatar {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(150deg, var(--accent), #B23E12);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-size: 22px;
+    color: #0A0D12;
+    box-shadow: 0 8px 20px -8px rgba(255,90,31,0.6);
+  }
+  .flip-front .r-name { font-size: 16px; font-weight: 600; }
+  .flip-front .r-email {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    word-break: break-all;
+    padding: 0 6px;
+  }
+  .flip-front .r-time { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .flip-hint {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--accent-2);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .flip-hint svg { width: 12px; height: 12px; }
+
+  .flip-back {
+    background: var(--bg-card-2);
+    transform: rotateY(180deg);
+    overflow-y: auto;
+  }
+  .flip-back::-webkit-scrollbar { width: 5px; }
+  .flip-back::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  .flip-back .qa { margin-bottom: 10px; }
+  .flip-back .q {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 2px;
+  }
+  .flip-back .a { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+  .name-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 4px 0 26px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 26px 0 40px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  @media print {
+    .dumbbell, .stage-glow { animation: none; }
+    body { background: #fff; color: #111; }
+    .flip-card-inner { transform: none !important; }
+    .flip-back { position: relative; transform: none; margin-top: 12px; }
+    .flip-card { height: auto; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="id-badge">
+        <span class="eyebrow">STUDENT ID</span>
+        <span class="name">Gimbert Ludovice</span>
+        <span class="sub">2nd Year · WITMWD3M1 &nbsp;|&nbsp; Prof. Daniel Richard</span>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <div class="meta-line"><strong>FORM</strong> — Next Steps &amp; Action Plan: Physical Fitness Assignment</div>
+          <div class="meta-line"><strong>HOST</strong> — Google Forms · Trimex Colleges Inc.</div>
+          <h1>PHYSICAL<br>FITNESS<span>.</span></h1>
+        </div>
+        <div class="stage">
+          <div class="stage-glow"></div>
+          <div class="stage-shadow"></div>
+          <div class="dumbbell">
+            <div class="db-plate back left"></div>
+            <div class="db-plate back right"></div>
+            <div class="db-bar"></div>
+            <div class="db-grip"></div>
+            <div class="db-plate front left"></div>
+            <div class="db-plate front right"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lane"><span class="lane-tag">PART 01 · EVIDENCE LOG</span></div>
+  </div>
+
+  <div class="wrap">
+
+    <section class="block" id="part1">
+      <div class="section-head">
+        <h2>Proof of Submission</h2>
+        <span class="count-pill">5 LOGGED</span>
+      </div>
+      <p class="lede">Screenshots confirming the form was accessed and submitted, in chronological order.</p>
+
+      <div class="log">
+        <div class="log-row">
+          <div class="idx">01</div>
+          <div class="desc">Student accessing the form on a mobile device
+            <span class="tag">Device unspecified · pre-submission</span>
+          </div>
+          <span class="pill progress">IN PROGRESS</span>
+        </div>
+        <div class="log-row">
+          <div class="idx">02</div>
+          <div class="desc">"Your response has been recorded."
+            <span class="tag">Android · Messenger in-app browser · 1:57 PM</span>
+          </div>
+          <span class="pill confirmed">CONFIRMED</span>
+        </div>
+        <div class="log-row">
+          <div class="idx">03</div>
+          <div class="desc">"Your response has been recorded."
+            <span class="tag">iOS · Safari · 12:27 PM</span>
+          </div>
+          <span class="pill confirmed">CONFIRMED</span>
+        </div>
+        <div class="log-row">
+          <div class="idx">04</div>
+          <div class="desc">"Your response has been recorded."
+            <span class="tag">Android · Chrome · 1:07 PM</span>
+          </div>
+          <span class="pill confirmed">CONFIRMED</span>
+        </div>
+        <div class="log-row">
+          <div class="idx">05</div>
+          <div class="desc">"Your response has been recorded."
+            <span class="tag">Android · Chrome · 2:37 PM</span>
+          </div>
+          <span class="pill confirmed">CONFIRMED</span>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>Note —</strong> Multiple confirmation screenshots across different devices, browsers, and timestamps indicate either repeated submission attempts or independent respondents submitting separately. This log does not by itself map a specific screenshot to a specific response row, since the form's confirmation page does not display response content.
+      </div>
+    </section>
+
+    <div class="lane" style="margin-top:48px;"><span class="lane-tag">PART 02 · RESPONSE DATA</span></div>
+
+    <section class="block" id="part2">
+      <div class="section-head">
+        <h2>Response Summary</h2>
+        <span class="count-pill">5 RESPONSES</span>
+      </div>
+      <p class="lede">5 usable responses analyzed (2 blank submissions excluded from totals).</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 4a1.6 1.6 0 1 1 0 3.2A1.6 1.6 0 0 1 13 4Z"/>
+              <path d="M6.5 20l1.8-5.4 2-1.6 1.2 2.3L15 20"/>
+              <path d="M8.5 13l1-3.6 3-1.3 2.3 2 3.2-.6"/>
+              <path d="M4 20h3.2"/>
+            </svg>
+            <h3>Physical Activities</h3>
+          </div>
+          <ul>
+            <li>Cardio dominates — running, jogging, and brisk walking, named by all 5 respondents.</li>
+            <li>One respondent (John Reynan) adds volleyball and bodyweight work (squats, push-ups).</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12a8 8 0 0 1 14-5.2M20 12a8 8 0 0 1-14 5.2"/>
+              <path d="M18 4v3.2h-3.2M6 20v-3.2h3.2"/>
+            </svg>
+            <h3>Exercise Frequency</h3>
+          </div>
+          <ul>
+            <li>Low frequency (1–2 days/week) — 3 students</li>
+            <li>Medium frequency — 1 student</li>
+            <li>3–4 days/week — 1 student (John Reynan, most consistent)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>
+            </svg>
+            <h3>Why They Exercise</h3>
+          </div>
+          <div class="meter-list">
+            <div class="meter-row">
+              <span class="meter-label">Boost / increase energy</span>
+              <div class="meter-track"><div class="meter-fill" style="width:60%"></div></div>
+              <span class="meter-count">3 / 5</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Stress reduction</span>
+              <div class="meter-track"><div class="meter-fill" style="width:40%"></div></div>
+              <span class="meter-count">2 / 5</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Immune / strength / bonding</span>
+              <div class="meter-track"><div class="meter-fill" style="width:20%"></div></div>
+              <span class="meter-count">1 / 5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s-7-4.4-9.5-9C.6 8.4 2.4 5 6 5c2 0 3.4 1.1 4 2 .6-.9 2-2 4-2 3.6 0 5.4 3.4 3.5 7-2.5 4.6-9.5 9-9.5 9Z"/>
+            </svg>
+            <h3>Benefits Experienced</h3>
+          </div>
+          <div class="meter-list">
+            <div class="meter-row">
+              <span class="meter-label">Increased energy</span>
+              <div class="meter-track"><div class="meter-fill" style="width:40%"></div></div>
+              <span class="meter-count">2 / 5</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Better sleep</span>
+              <div class="meter-track"><div class="meter-fill" style="width:20%"></div></div>
+              <span class="meter-count">1 / 5</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Stress reduction</span>
+              <div class="meter-track"><div class="meter-fill" style="width:20%"></div></div>
+              <span class="meter-count">1 / 5</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Calmer / more focused</span>
+              <div class="meter-track"><div class="meter-fill" style="width:20%"></div></div>
+              <span class="meter-count">1 / 5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <h3>Why Fitness Matters for College Students</h3>
+        <p class="lede" style="margin-top:-4px;">The most substantive open-ended question. Common themes:</p>
+        <ul>
+          <li>Managing academic stress from studying, projects, and deadlines</li>
+          <li>Staying energized through long study hours</li>
+          <li>Better focus, memory, and clarity during exams</li>
+          <li>Improved sleep quality</li>
+          <li>Building discipline and healthy habits for the future</li>
+        </ul>
+        <div class="depth-note">
+          <strong>Depth of response —</strong> Two answers (Eladio Canales and John Reynan) were genuinely thoughtful and well-developed. The remaining three were shorter and more surface-level — one respondent answered simply "Gym."
+        </div>
+      </div>
+
+      <div class="quick-read">
+        <span class="eyebrow">QUICK READ</span>
+        Small sample size, heavily skewed toward cardio and low-frequency routines. If the goal is to gauge whether students grasp the <em>why</em> behind fitness — not just what they do — only 2 of 5 responses show real depth. Worth flagging if grading for critical thinking versus task completion alone.
+      </div>
+    </section>
+
+    <div class="lane" style="margin-top:16px;"><span class="lane-tag">PART 03 · INDIVIDUAL RESPONDENTS</span></div>
+
+    <section class="block" id="part3">
+      <div class="section-head">
+        <h2>Respondent Cards</h2>
+        <span class="count-pill">TAP TO FLIP</span>
+      </div>
+      <p class="name-note">Names for 4 of 5 respondents are inferred from their email address format, not stated directly on the form.</p>
+
+      <div class="flip-grid">
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <div class="avatar">?</div>
+              <div class="r-name">Respondent 1</div>
+              <div class="r-email">1-230046@asiatech.edu.ph</div>
+              <div class="r-time">Aug 29 · 12:27 PM</div>
+              <div class="flip-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                TAP FOR ANSWERS
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="qa"><div class="q">Activities</div><div class="a">Cardio</div></div>
+              <div class="qa"><div class="q">Frequency</div><div class="a">Medium frequency</div></div>
+              <div class="qa"><div class="q">Why exercise</div><div class="a">Stress reduction</div></div>
+              <div class="qa"><div class="q">Benefits</div><div class="a">Increased energy</div></div>
+              <div class="qa"><div class="q">Why it matters</div><div class="a">Gym</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <div class="avatar">RP</div>
+              <div class="r-name">Ralph Lalaine Perez</div>
+              <div class="r-email">ralphlalaineperez@student.trimexcolleges.edu.ph</div>
+              <div class="r-time">Aug 29 · 1:07 PM</div>
+              <div class="flip-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                TAP FOR ANSWERS
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="qa"><div class="q">Activities</div><div class="a">Cardio</div></div>
+              <div class="qa"><div class="q">Frequency</div><div class="a">Low Frequency</div></div>
+              <div class="qa"><div class="q">Why exercise</div><div class="a">Boost Energy</div></div>
+              <div class="qa"><div class="q">Benefits</div><div class="a">Increased Energy</div></div>
+              <div class="qa"><div class="q">Why it matters</div><div class="a">To maintain physical energy and active lifestyle</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <div class="avatar">EC</div>
+              <div class="r-name">Eladio Canales</div>
+              <div class="r-email">canaleseladio_bscs@plmun.edu.ph</div>
+              <div class="r-time">Aug 29 · 1:56 PM</div>
+              <div class="flip-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                TAP FOR ANSWERS
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="qa"><div class="q">Activities</div><div class="a">Cardio: running, jogging, or other aerobic exercise for cardiovascular endurance.</div></div>
+              <div class="qa"><div class="q">Frequency</div><div class="a">Low frequency (1–2 days/week) — easy routines like walking.</div></div>
+              <div class="qa"><div class="q">Why exercise</div><div class="a">Boost energy through cardiovascular activity for natural vitality.</div></div>
+              <div class="qa"><div class="q">Benefits</div><div class="a">Better sleep — exercise contributes to better rest and recovery.</div></div>
+              <div class="qa"><div class="q">Why it matters</div><div class="a">Helps students stay healthy, active, and focused; reduces stress, improves mood, energy, and sleep; builds discipline and healthy habits for the future.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <div class="avatar">JR</div>
+              <div class="r-name">John Reynan Juadines</div>
+              <div class="r-email">johnreynanjuadines@student.trimexcolleges.edu.ph</div>
+              <div class="r-time">Aug 29 · 1:57 PM</div>
+              <div class="flip-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                TAP FOR ANSWERS
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="qa"><div class="q">Activities</div><div class="a">Jogging and brisk walking every morning, volleyball with friends, and bodyweight exercises (squats, push-ups) at home.</div></div>
+              <div class="qa"><div class="q">Frequency</div><div class="a">3–4 days per week — jogging, walking, and sports, keeping him consistent without overtraining.</div></div>
+              <div class="qa"><div class="q">Why exercise</div><div class="a">To stay strong, healthy, and fit; boosts energy and heart health; bonding with friends makes it fun.</div></div>
+              <div class="qa"><div class="q">Benefits</div><div class="a">More energy, better sleep, reduced stress — feels stronger, happier, calmer, and more focused daily.</div></div>
+              <div class="qa"><div class="q">Why it matters</div><div class="a">Keeps energy up through busy school life, supports immunity and mental sharpness, acts as a natural stress-buster, and improves sleep — "fitness isn't just about looking good, it's about having the strength and energy to do our best."</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-face flip-front">
+              <div class="avatar">KR</div>
+              <div class="r-name">Kissa Jane Rondina</div>
+              <div class="r-email">kissajanerondina@student.trimexcolleges.edu.ph</div>
+              <div class="r-time">Aug 29 · 2:37 PM</div>
+              <div class="flip-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                TAP FOR ANSWERS
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="qa"><div class="q">Activities</div><div class="a">Cardio — running, jogging, and general exercise.</div></div>
+              <div class="qa"><div class="q">Frequency</div><div class="a">Low frequency, 1–2 days/week.</div></div>
+              <div class="qa"><div class="q">Why exercise</div><div class="a">Boosts her immune system and is needed for her work.</div></div>
+              <div class="qa"><div class="q">Benefits</div><div class="a">Stress reduction.</div></div>
+              <div class="qa"><div class="q">Why it matters</div><div class="a">Always exercise, think positive, focus on the goal, and manage time well.</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    GENERATED DOCUMENTATION — PHYSICAL FITNESS ASSIGNMENT — TRIMEX COLLEGES
+  </footer>
+
+</body>
+</html>
